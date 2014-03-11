@@ -49,15 +49,9 @@ public class MainActivity extends Activity {
  
 			@Override
 			public void onClick(View v) {
-				Calendar c=Calendar.getInstance();
-				int hour=c.get(Calendar.HOUR_OF_DAY);
-				int min=c.get(Calendar.MINUTE);
-				Intent i=new Intent(AlarmClock.ACTION_SET_ALARM);
-				i.putExtra(AlarmClock.EXTRA_HOUR, hour);
-				i.putExtra(AlarmClock.EXTRA_MINUTES, min+20);
-				i.putExtra(AlarmClock.EXTRA_MESSAGE, "Parking ticket ends in 20 minutes");
+				Intent i = new Intent(getApplicationContext(), AlarmActivity.class);
 				startActivity(i);
-						
+								
 			
 		}
 		

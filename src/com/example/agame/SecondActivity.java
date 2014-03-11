@@ -17,6 +17,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -44,7 +45,7 @@ public class SecondActivity extends Activity implements LocationListener,SensorE
 		mSensor=sMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         //sMgr.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
 		
-		tVtest=(TextView) findViewById(R.id.sensorVal);
+		//tVtest=(TextView) findViewById(R.id.sensorVal);
 		
         back=(Button) findViewById(R.id.button_main);
 		
@@ -71,22 +72,22 @@ public class SecondActivity extends Activity implements LocationListener,SensorE
 		
 
 loc=new Location(LocationManager.NETWORK_PROVIDER);
-tVtest.setText(String.valueOf(value));
-/*
 
-loc.setLatitude(24);
-loc.setLongitude(25);
+
+
+loc.setLatitude(45.422691);
+loc.setLongitude(4.408857);
 
 	
 	try {
-		Address a=getAddressForLocation(this, loc);
+//		Address a=getAddressForLocation(this, loc);
 	
 	//basics for SMS texting
 
 	  String phoneNo = "0698330337";
 	  String sms=new String();
-	  if (a!=null)
-		  sms= "EMERGENCY"+a.getLocality();
+	  if (loc!=null)
+		  sms= "Latitude: "+loc.getLatitude()+"\nLongitude : "+loc.getLongitude();
 	  else
 		  sms="Emergency";
 		  
@@ -106,8 +107,10 @@ loc.setLongitude(25);
 	  }
 	
 	
+	
+	
  
-*/
+
 
 	}
 

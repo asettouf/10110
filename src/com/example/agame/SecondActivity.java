@@ -7,28 +7,46 @@ import java.util.Locale;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
-public class SecondActivity extends Activity implements LocationListener {
+public class SecondActivity extends Activity implements LocationListener,SensorEventListener {
 
-	
+	private LocationManager locationManager;
 	private Location loc;
 	
+	private SensorManager sMgr;
+	private Sensor mSensor;
+	private float value;
+	
+	private TextView tVtest;
 	private Button back;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_second);
 
-		back=(Button) findViewById(R.id.button_main);
+		sMgr=(SensorManager) getSystemService(Context.SENSOR_SERVICE);
+		mSensor=sMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        //sMgr.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+		
+		tVtest=(TextView) findViewById(R.id.sensorVal);
+		
+        back=(Button) findViewById(R.id.button_main);
 		
 		back.setOnClickListener(new OnClickListener() {
  
@@ -40,21 +58,21 @@ public class SecondActivity extends Activity implements LocationListener {
 		});
 		
 		//basics for geoloc
-//locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 	//Log.i(LocationManager.GPS_PROVIDER, "tt");
 // Define a listener that responds to location updates
 	
 // Register the listener with the Location Manager to receive location updates
 
-//locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
 
 
-//	loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		
 
+loc=new Location(LocationManager.NETWORK_PROVIDER);
+tVtest.setText(String.valueOf(value));
 /*
-loc=new Location(LocationManager.GPS_PROVIDER);
-
-
 
 loc.setLatitude(24);
 loc.setLongitude(25);
@@ -128,6 +146,10 @@ loc.setLongitude(25);
 
 	@Override
 	public void onLocationChanged(Location location) {
+
+		Toast.makeText(getApplicationContext(),
+			"Location Changed",
+			Toast.LENGTH_SHORT).show();
 		locUp(location);
 		
 	}
@@ -147,6 +169,23 @@ loc.setLongitude(25);
 	@Override
 	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onAccuracyChanged(Sensor arg0, int arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onSensorChanged(SensorEvent event) {
+		// TODO Auto-generated method stub
+
+		Toast.makeText(getApplicationContext(),
+			"Accelerometer Changed",
+			Toast.LENGTH_SHORT).show();
+		value=event.values[0];
 		
 	}
 

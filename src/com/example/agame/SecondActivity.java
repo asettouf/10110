@@ -1,6 +1,7 @@
 package com.example.agame;
 
 import java.io.IOException;
+import java.security.Provider;
 import java.util.List;
 import java.util.Locale;
 
@@ -75,24 +76,28 @@ public class SecondActivity extends Activity implements LocationListener,SensorE
 		
 		//basics for geoloc
 		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		Provider mProv;
+		
 	//Log.i(LocationManager.GPS_PROVIDER, "tt");
 // Define a listener that responds to location updates
 	
 // Register the listener with the Location Manager to receive location updates
 
-		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+		if(locationManager.getAllProviders().size()!=0){
 
-
-		loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-		
-
-loc=new Location(LocationManager.NETWORK_PROVIDER);
-
-
-
-loc.setLatitude(45.422691);
-loc.setLongitude(4.408857);
-
+			locationManager.requestLocationUpdates(locationManager.getAllProviders().get(0), 0, 0, this);
+			loc = locationManager.getLastKnownLocation(locationManager.getAllProviders().get(0));
+			if (loc==null){
+				Toast.makeText(getApplicationContext(),
+						"No loc",
+						Toast.LENGTH_SHORT).show();
+			}
+				
+		}
+		else
+			Toast.makeText(getApplicationContext(),
+					"No loc mgr",
+					Toast.LENGTH_SHORT).show();
 	
 	try {
 //		Address a=getAddressForLocation(this, loc);
@@ -196,10 +201,7 @@ loc.setLongitude(4.408857);
 	public void onSensorChanged(SensorEvent event) {
 		// TODO Auto-generated method stub
 
-		Toast.makeText(getApplicationContext(),
-			"Accelerometer Changed",
-			Toast.LENGTH_SHORT).show();
-		value=event.values[0];
+
 		
 	}
 

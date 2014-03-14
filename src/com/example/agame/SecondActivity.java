@@ -42,7 +42,22 @@ public class SecondActivity extends Activity implements LocationListener,SensorE
 		setContentView(R.layout.activity_second);
 
 		sMgr=(SensorManager) getSystemService(Context.SENSOR_SERVICE);
-		mSensor=sMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+		
+		if (sMgr.getSensorList(Sensor.TYPE_ACCELEROMETER).size()!=0){
+			mSensor=sMgr.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0);
+			if(sMgr.registerListener(this, mSensor,SensorManager.SENSOR_DELAY_GAME)){
+				Toast.makeText(getApplicationContext(),
+						"No registration",
+						Toast.LENGTH_SHORT).show();
+					
+			}
+		}
+		else{
+			Toast.makeText(getApplicationContext(),
+					"No sensors",
+					Toast.LENGTH_SHORT).show();
+
+		}
         //sMgr.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
 		
 		//tVtest=(TextView) findViewById(R.id.sensorVal);
@@ -107,10 +122,6 @@ loc.setLongitude(4.408857);
 	  }
 	
 	
-	
-	
- 
-
 
 	}
 
